@@ -137,9 +137,7 @@ describe('tweets', () => {
 
   // DELETE /tweets/:id
   test('delete tweet', async () => {
-    const res = await supertest(app).delete(
-      `/tweets/${tweets[0]._id}`
-    );
+    const res = await supertest(app).delete(`/tweets/${tweets[0]._id}`);
     expect(res.status).toBe(200);
     const actual = await Tweet.find();
     expect(actual.length).toBe(3);
