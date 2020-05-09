@@ -1,6 +1,6 @@
 import * as supertest from 'supertest';
 import * as mongoose from 'mongoose';
-import * as express from "express";
+import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
@@ -22,10 +22,14 @@ describe('tweets', () => {
   let tweets: any[] = [];
   beforeAll(async () => {
     const uri = await mongod.getConnectionString();
-    mongoose.connect(uri, { useNewUrlParser: true });
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      // useUnifiedTopology: true,
+    });
   });
 
   beforeEach(async () => {
+    tweets.length = 0;
     tweets.push(
       await new Tweet({
         userId: user1Id,
@@ -64,15 +68,15 @@ describe('tweets', () => {
     expect(res.body[0]._id).toBe(tweets[3]._id.toString());
   });
 
-  // // GET /tweets/:id
-  // test('get tweet', async (t) => {
-  //   const target = t.context.tweets[0];
-  //   const res = await supertest(app).get(`/tweets/${target._id}`);
-  //   t.is(res.status, 200);
-  //   t.is(res.body._id, target._id.toString());
-  //   t.is(res.body.userId, target.userId.toString());
-  //   t.is(res.body.content, target.content);
-  // });
+  // GET /tweets/:id
+  test('get tweet', async () => {
+    const target = tweets[0];
+    const res = await supertest(app).get(`/tweets/${target._id}`);
+    expect(res.status).toBe(200);
+    expect(res.body._id).toBe(target._id.toString());
+    expect(res.body.userId).toBe(target.userId.toString());
+    expect(res.body.content).toBe(target.content);
+  });
   //
   // test('get tweet not found', async (t) => {
   //   const res = await supertest(app).get(

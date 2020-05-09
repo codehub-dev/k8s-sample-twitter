@@ -16,5 +16,5 @@ module.exports = {
   },
   testMatch: ['**/tests/**/*.test.ts'],
   collectCoverageFrom: ['src/**/*.ts'],
-  testEnvironment: 'node'
+  testEnvironment: 'node',
 };

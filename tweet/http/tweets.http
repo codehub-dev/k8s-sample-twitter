@@ -6,7 +6,7 @@ POST http://localhost:3000/v1/tweets
 Accept: application/json
 
 ###
-GET http://localhost:3000/v1/tweets/1
+GET http://localhost:3000/v1/tweets/5eb65489e1590e01f0c95697
 Accept: application/json
 
 ###
