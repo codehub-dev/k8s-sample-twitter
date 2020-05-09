@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon ./src/app.js",
-    "test": "jest --detectOpenHandles "
+    "test": "jest --detectOpenHandles",
+    "db-init": "ts-node ./scripts/initialize.ts"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -27,6 +28,7 @@
     "nodemon": "^2.0.3",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.0",
+    "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   }
 }
