@@ -77,84 +77,85 @@ describe('tweets', () => {
     expect(res.body.userId).toBe(target.userId.toString());
     expect(res.body.content).toBe(target.content);
   });
-  //
-  // test('get tweet not found', async (t) => {
-  //   const res = await supertest(app).get(
-  //     `/tweets/${new mongoose.Types.ObjectId()}`
-  //   );
-  //   t.is(res.status, 404);
-  //   t.deepEqual(res.body, { error: 'NotFound' });
-  // });
-  //
-  // test('get tweet id is invalid', async (t) => {
-  //   const res = await supertest(app).get('/tweets/invalid');
-  //   t.is(res.status, 400);
-  //   t.deepEqual(res.body, { error: 'BadRequest' });
-  // });
-  //
-  // // POST /tweets
-  // test('create tweet', async (t) => {
-  //   const content = 'xxx';
-  //   const res = await supertest(app)
-  //     .post('/tweets')
-  //     .send({ userId: user1Id.toString(), content: content });
-  //   t.is(res.status, 200);
-  //   t.true('_id' in res.body);
-  //   t.is(res.body.content, content);
-  // });
-  //
-  // test('create tweet no userId', async (t) => {
-  //   const content = 'xxx';
-  //   const res = await supertest(app).post('/tweets').send({ content: content });
-  //   t.is(res.status, 400);
-  //   t.deepEqual(res.body, { error: 'BadRequest' });
-  // });
-  //
-  // test('create tweet no content', async (t) => {
-  //   const res = await supertest(app)
-  //     .post('/tweets')
-  //     .send({ userId: user1Id.toString() });
-  //   t.is(res.status, 400);
-  //   t.deepEqual(res.body, { error: 'BadRequest' });
-  // });
-  //
-  // test('create tweet content is empty', async (t) => {
-  //   const res = await supertest(app)
-  //     .post('/tweets')
-  //     .send({ userId: user1Id.toString(), content: '' });
-  //   t.is(res.status, 400);
-  //   t.deepEqual(res.body, { error: 'BadRequest' });
-  // });
-  //
-  // test('create tweet content is too long', async (t) => {
-  //   const res = await supertest(app)
-  //     .post('/tweets')
-  //     .send({ userId: user1Id.toString(), content: 'a' * 141 });
-  //   t.is(res.status, 400);
-  //   t.deepEqual(res.body, { error: 'BadRequest' });
-  // });
-  //
-  // // DELETE /tweets/:id
-  // test('delete tweet', async (t) => {
-  //   const res = await supertest(app).delete(
-  //     `/tweets/${t.context.tweets[0]._id}`
-  //   );
-  //   t.is(res.status, 200);
-  //   const actual = await Tweet.find();
-  //   t.is(actual.length, 3);
-  // });
-  //
-  // test('delete tweet not found', async (t) => {
-  //   const res = await supertest(app).delete(
-  //     `/tweets/${new mongoose.Types.ObjectId()}`
-  //   );
-  //   t.is(res.status, 404);
-  //   t.deepEqual(res.body, { error: 'NotFound' });
-  // });
-  //
-  // test('delete tweet id is invalid', async (t) => {
-  //   const res = await supertest(app).delete('/tweets/invalid');
-  //   t.is(res.status, 400);
-  //   t.deepEqual(res.body, { error: 'BadRequest' });
-  // });
+
+  test('get tweet not found', async () => {
+    const res = await supertest(app).get(
+      `/tweets/${new mongoose.Types.ObjectId()}`
+    );
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ error: 'NotFound' });
+  });
+
+  test('get tweet id is invalid', async () => {
+    const res = await supertest(app).get('/tweets/invalid');
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: 'BadRequest' });
+  });
+
+  // POST /tweets
+  test('create tweet', async () => {
+    const content = 'xxx';
+    const res = await supertest(app)
+      .post('/tweets')
+      .send({ userId: user1Id.toString(), content: content });
+    expect(res.status).toBe(200);
+    expect('_id' in res.body).toBeTruthy();
+    expect(res.body.content).toBe(content);
+  });
+
+  test('create tweet no userId', async () => {
+    const content = 'xxx';
+    const res = await supertest(app).post('/tweets').send({ content: content });
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: 'BadRequest' });
+  });
+
+  test('create tweet no content', async () => {
+    const res = await supertest(app)
+      .post('/tweets')
+      .send({ userId: user1Id.toString() });
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: 'BadRequest' });
+  });
+
+  test('create tweet content is empty', async () => {
+    const res = await supertest(app)
+      .post('/tweets')
+      .send({ userId: user1Id.toString(), content: '' });
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: 'BadRequest' });
+  });
+
+  test('create tweet content is too long', async () => {
+    const res = await supertest(app)
+      .post('/tweets')
+      // @ts-ignore
+      .send({ userId: user1Id.toString(), content: 'a' * 141 });
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: 'BadRequest' });
+  });
+
+  // DELETE /tweets/:id
+  test('delete tweet', async () => {
+    const res = await supertest(app).delete(
+      `/tweets/${tweets[0]._id}`
+    );
+    expect(res.status).toBe(200);
+    const actual = await Tweet.find();
+    expect(actual.length).toBe(3);
+  });
+
+  test('delete tweet not found', async () => {
+    const res = await supertest(app).delete(
+      `/tweets/${new mongoose.Types.ObjectId()}`
+    );
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ error: 'NotFound' });
+  });
+
+  test('delete tweet id is invalid', async () => {
+    const res = await supertest(app).delete('/tweets/invalid');
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: 'BadRequest' });
+  });
 });
