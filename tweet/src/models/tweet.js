@@ -1,19 +1,20 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const Tweet = new Schema({
-        userId: {type: Schema.types.ObjectId, required: true},
+const Tweet = new Schema(
+    {
+        userId: { type: Schema.Types.ObjectId, required: true },
         content: {
-            type: string,
+            type: String,
             required: true,
             minlength: 1,
             maxlength: 140
         },
-        createdAt: {type: Date, default: Date.now}
+        createdAt: { type: Date, default: Date.now }
     },
     {
         versionKey: false
     }
 )
 
-exports.Tweet = mongoose.model('Tweet', Tweet);
+exports.Tweet = mongoose.model('Tweet', Tweet)
