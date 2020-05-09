@@ -3,6 +3,22 @@ const model = require('../../models/tweet.js');
 const Tweet = model.Tweet;
 const router = express.Router();
 
+/**
+ * @swagger
+ *
+ * /tweets:
+ *   get:
+ *     description: Return a list of tweets.
+ *     tags:
+ *       - tweets
+ *     responses:
+ *       '200':
+ *         description: A JSON array of tweets
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tweets'
+ */
 router.get('/', (req, res, next) => {
   (async () => {
     const tweets = await Tweet.find({}, null, {
@@ -12,6 +28,34 @@ router.get('/', (req, res, next) => {
   })().catch(next);
 });
 
+/**
+ * @swagger
+ *
+ * /tweets/{id}:
+ *   get:
+ *     description: Find tweet by ID.
+ *     tags:
+ *       - tweets
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Tweet ID.
+ *         schema:
+ *           type: string
+ *         example: '000000000000000000000000'
+ *     responses:
+ *       '200':
+ *         description: A JSON object of tweet.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tweet'
+ *       '400':
+ *         $ref: '#/components/responses/BadRequest'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ */
 router.get('/:id', (req, res, next) => {
   (async () => {
     try {
@@ -28,6 +72,42 @@ router.get('/:id', (req, res, next) => {
   })().catch(next);
 });
 
+/**
+ * @swagger
+ *
+ * /tweets:
+ *   post:
+ *     description: Create a tweet.
+ *     tags:
+ *       - tweets
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: '000000000000000000000000'
+ *               content:
+ *                 type: string
+ *                 minLength: 1
+ *                 maxLength: 140
+ *                 example: 'hello world.'
+ *             required:
+ *               - userId
+ *               - content
+ *     responses:
+ *       '200':
+ *         description: Created tweet.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tweet'
+ *       '400':
+ *         $ref: '#/components/responses/BadRequest'
+ */
 router.post('/', (req, res, next) => {
   (async () => {
     try {
@@ -44,6 +124,30 @@ router.post('/', (req, res, next) => {
   })().catch(next);
 });
 
+/**
+ * @swagger
+ *
+ * /tweets/{id}:
+ *   delete:
+ *     description: Delete a tweet.
+ *     tags:
+ *       - tweets
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Tweet ID.
+ *         schema:
+ *           type: string
+ *         example: '000000000000000000000000'
+ *     responses:
+ *       '200':
+ *         description: Empty body.
+ *       '400':
+ *         $ref: '#/components/responses/BadRequest'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ */
 router.delete('/:id', (req, res, next) => {
   (async () => {
     try {

@@ -1,0 +1,47 @@
+---
+components:
+  schemas:
+    Tweet:
+      required:
+        - userId
+        - content
+      properties:
+        _id:
+          type: string
+          example: '999999999999999999999999'
+        userId:
+          type: string
+          example: '000000000000000000000000'
+        content:
+          type: string
+          minLength: 1
+          maxLength: 140
+          example: 'hello world.'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2019-01-01T13:00:00.000Z'
+    Tweets:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tweet'
+    Error:
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: 'BadRequest'
+  responses:
+    BadRequest:
+      description: Bad request error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

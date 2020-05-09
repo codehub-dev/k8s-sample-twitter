@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: tweet
+  version: 1.0.0
+servers:
+  - url: /v1
+paths:
+  /timeline:
+    post:
+      description: Get user timeline.
+      tags:
+        - timeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+              example:
+                - '000000000000000000000000'
+                - '000000000000000000000001'
+      responses:
+        '200':
+          description: A JSON array of tweets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tweets'
+  /tweets:
+    get:
+      description: Return a list of tweets.
+      tags:
+        - tweets
+      responses:
+        '200':
+          description: A JSON array of tweets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tweets'
+    post:
+      description: Create a tweet.
+      tags:
+        - tweets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: '000000000000000000000000'
+                content:
+                  type: string
+                  minLength: 1
+                  maxLength: 140
+                  example: hello world.
+              required:
+                - userId
+                - content
+      responses:
+        '200':
+          description: Created tweet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tweet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  '/tweets/{id}':
+    get:
+      description: Find tweet by ID.
+      tags:
+        - tweets
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tweet ID.
+          schema:
+            type: string
+          example: '000000000000000000000000'
+      responses:
+        '200':
+          description: A JSON object of tweet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tweet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      description: Delete a tweet.
+      tags:
+        - tweets
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tweet ID.
+          schema:
+            type: string
+          example: '000000000000000000000000'
+      responses:
+        '200':
+          description: Empty body.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Tweet:
+      required:
+        - userId
+        - content
+      properties:
+        _id:
+          type: string
+          example: '999999999999999999999999'
+        userId:
+          type: string
+          example: '000000000000000000000000'
+        content:
+          type: string
+          minLength: 1
+          maxLength: 140
+          example: hello world.
+        createdAt:
+          type: string
+          format: date-time
+          example: '2019-01-01T13:00:00.000Z'
+    Tweets:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tweet'
+    Error:
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: BadRequest
+  responses:
+    BadRequest:
+      description: Bad request error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Not found error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+tags: []

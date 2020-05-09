@@ -12,8 +12,8 @@ if (process.env.MONGODB_ADMIN_NAME) {
   options.user = process.env.MONGODB_ADMIN_NAME;
   // @ts-ignore
   options.pass = process.env.MONGODB_ADMIN_PASS;
-// @ts-ignore
-options.auth = { authSource: 'admin' };
+  // @ts-ignore
+  options.auth = { authSource: 'admin' };
 }
 
 const ObjectId = mongoose.Types.ObjectId;
