@@ -7,7 +7,7 @@
     "start": "node src/app.js",
     "dev": "NODE_ENV=development nodemon ./src/app.js",
     "test": "jest --detectOpenHandles",
-    "db-init": "ts-node ./scripts/initialize.ts",
+    "db-init": "ts-node ./dev_tools/initialize.ts",
     "swagger": "swagger-jsdoc -o ./swagger/swagger.yml -d ./swagger/swaggerDef.js ./src/controllers/**/*.js ./swagger/components.yml"
   },
   "dependencies": {
