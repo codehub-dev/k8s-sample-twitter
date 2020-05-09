@@ -5,7 +5,7 @@
   "author": "su- <aaaiiiuuu35@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prettier:fix": "prettier --write ./tweet/**/*.{ts,js} ./*.js",
+    "prettier:fix": "prettier --write ./{tweet,user}/**/*.{ts,js} ./*.js",
     "lint": "eslint --ext .js ."
   },
   "devDependencies": {
