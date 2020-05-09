@@ -8,10 +8,10 @@ const router = express.Router();
 if (process.env.NODE_ENV === 'development') {
   const swaggerJSDoc = require('swagger-jsdoc');
   const options = {
-    swaggerDefinition: require('../swagger/swaggerDef.js'),
+    swaggerDefinition: require('../../swagger/swaggerDef.js'),
     apis: [
-      './controllers/v1/tweets.js',
-      './controllers/v1/timeline.js',
+      './src/controllers/v1/tweets.js',
+      './src/controllers/v1/timeline.js',
       './swagger/components.yml',
     ],
   };
